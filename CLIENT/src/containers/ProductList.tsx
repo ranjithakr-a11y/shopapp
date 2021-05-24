@@ -3,7 +3,6 @@ import Column from "../components/Column";
 import Product from "../components/Product";
 import Row from "../components/Row";
 import ProductService from "../services/ProductService";
-import { ProductType, StoreType } from "../types";
 import { RouteComponentProps } from "react-router-dom";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
@@ -13,9 +12,10 @@ import LoadingWrapper from "../components/LoadingWrapper";
 import LoadingActions from "../store/actions/LoadingActions";
 import classes from "../components/Filter.module.css";
 import { Slider } from "@material-ui/core";
+import { ProductType, StoreType, CurrencyRateType } from "../types";
 
 type Props = {
-    selectedCurrency: string;
+    selectedCurrency: CurrencyRateType;
     showLoader: () => void;
     hideLoader: () => void;
     addItem: (product: ProductType) => void;

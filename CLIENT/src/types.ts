@@ -1,5 +1,5 @@
 export type StoreType = {
-  currency: string;
+  currency: CurrencyRateType;
   cart: CartType[];
   userSession: UserSessionType;
   loading: boolean;
@@ -36,6 +36,21 @@ export type LoginResponseType = {
   expiresIn: number;
   access_token: string;
 };
+
+export interface ExchangeCurrencyType {
+  base: string;
+  date: Date;
+  rates: Map<string, number>;
+  success: string;
+  timestamp: any;
+  __proto_: object;
+}
+
+export type CurrencyRateType = {
+  currencyCode: string;
+  value: number;
+};
+
 
 export type UserSessionType = {
   user: object | null;

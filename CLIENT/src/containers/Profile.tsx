@@ -1,12 +1,14 @@
 import axios from "axios";
 import React from "react";
+import { connect } from "react-redux";
 import { Redirect, RouteComponentProps } from "react-router";
 import Column from "../components/Column";
 import ProfileUpload from "../components/ProfileUpload";
 import Row from "../components/Row";
 import StorageService from "../services/StorageService";
 import UserService from "../services/UserService";
-type Props = { uploadClick: () => void } & RouteComponentProps;
+import {StoreType, CurrencyRateType} from "../types";
+type Props = { uploadClick: () => void; selectedCurrency:CurrencyRateType } & RouteComponentProps;
 type State = {
     orderAddress: any;
     line1: string;
@@ -117,6 +119,14 @@ class Profile extends React.Component<Props, State> {
                 })
             );
     };
+    getCorrectCurrencyValue(priceAmount: number) {
+        // console.log(priceAmount, this.props.currency.value);
+        const value = priceAmount * this.props.selectedCurrency.value;
+        return value.toString();
+      }
+      convertStringToInt(myString: string) {
+        return parseInt(myString);
+      }
 
     addAddress = (e: any) => {
         e.preventDefault();
@@ -255,7 +265,14 @@ class Profile extends React.Component<Props, State> {
                                                         <p>
                                                             <b>Price Per Qty</b>
                                                         </p>
-                                                        {data.productSalePrice}
+                                                        {
+                                                            this.props.selectedCurrency.currencyCode
+                                                
+                                                        }
+                                                      
+                                                        {this.getCorrectCurrencyValue(
+            this.convertStringToInt(data.productSalePrice)
+          )}
                                                     </td>
                                                     <td className="full-width col-2">
                                                         <p>
@@ -269,8 +286,14 @@ class Profile extends React.Component<Props, State> {
                                                         <p>
                                                             <b>Total Amount</b>
                                                         </p>
+                                                        {
+                                                            this.props.selectedCurrency.currencyCode
+                                                        }
                                                         {data.productSalePrice *
                                                             data.productQty}
+                                                            {this.getCorrectCurrencyValue(
+            this.convertStringToInt(data.productSalePrice)
+          )}
                                                     </td>
                                                 </tr>
                                             </>
@@ -425,4 +448,9 @@ class Profile extends React.Component<Props, State> {
         );
     }
 }
-export default Profile;
+const mapStoreToProps = (store: StoreType) => {
+    return {
+        selectedCurrency: store.currency,
+    };
+};
+export default connect(mapStoreToProps, null)(Profile);
